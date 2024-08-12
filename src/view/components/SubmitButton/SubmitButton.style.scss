@@ -1,0 +1,19 @@
+.submit-btn{
+    margin-top: 40px;
+    width: 462px;
+    height: 43px;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-size: 21.5px;
+    font-weight: 500;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: $submit-btn-blue;
+}
+
+@media(max-width: 425px) {
+    .submit-btn {
+      width: 40vw;
+      height: 43px;
+    }
+  }
