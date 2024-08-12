@@ -1,8 +1,10 @@
 
 **Overview**
-This project was initially created by a junior developer, and it’s a bit messy. Your task is to clean it up and make it more robust. The form is the main component here, and it needs some serious attention.
+
+This project was initially created by a junior developer, and it’s a bit messy. Your task is to clean it up and make maintainable. The form is the main component here, and it needs some serious attention.
 
 **Task Requirements**
+
 API Integration:
 
 Implement API calls to a government API using React Query. This is a requirement for the task.
@@ -19,6 +21,7 @@ Styling:
 Keep the existing layout and styling. This isn't the focus of the task.
 
 **Code Enhancement:**
+
 You have the freedom to improve the overall code structure. Better file organization, more efficient functions, or any other enhancements you see fit are encouraged.
 
 *Final Notes*
