@@ -4,6 +4,10 @@
 
 This project was initially created by a junior developer, and it’s a bit messy. Your task is to clean it up and make it maintainable and reusable. The form is the main component here, and it needs some serious attention.
 
+## Setup
+
+To get started with the project, please fork the repository to your GitHub account.
+
 ## Task Requirements
 
 ### 1. API Integration
@@ -26,3 +30,7 @@ This project was initially created by a junior developer, and it’s a bit messy
 ## Final Notes
 
 Feel free to use your skills and judgment to make the project as clean and maintainable as possible. We're looking forward to seeing how you can elevate this project!
+
+Submission
+
+After completing the project, please submit it by creating a pull request to our repository.
