@@ -1,0 +1,47 @@
+@import "../../style/setup/variables.scss";
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .header-title {
+        color: $title-text-black;
+        font-weight: 600;
+        font-size: 40px;
+        letter-spacing: 0.09em;
+    }
+
+    .header-explanation {
+        color: $main-dark-red;
+        font-weight: 700;
+        font-size: 13px;
+        padding-top: 7px;
+        padding-left: 13px;
+        align-self: center;
+    }
+}
+
+
+
+@media(max-width: 425px) {
+
+
+    .form-header {
+        flex-direction: column;
+
+        .header-title {
+            color: #303030;
+            font-weight: 600;
+            font-size: 36px;
+            letter-spacing: 0.09em;
+        }
+
+        .header-explanation {
+            font-size: 12px;
+            padding-left: 0px;
+            align-self: flex-start;
+        }
+    }
+
+
+}
