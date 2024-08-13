@@ -1,14 +1,18 @@
 import React from 'react'
 
 export interface SubmitButtonProps {
-    className: string
-    buttonText: string
+    disabled: boolean
 }
 
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ className, buttonText }) => {
+export const SubmitButton: React.FC<SubmitButtonProps> = ({ disabled }) => {
+
     return (
-        <button type='submit' className={className}>
-            {buttonText}
+        <button
+            type="submit"
+            disabled={disabled}
+            className="submit-btn"
+        >
+            שלח
         </button>
     )
 }

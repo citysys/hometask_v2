@@ -1,21 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+
+import { useStreets } from '../../hooks'
 
 import { NewUserSchema, NewUser } from '../../model/NewUser.model'
 import { createUser } from '../../controller/entities/user.actions'
-import { fetchStreets } from '../../model/services/api.service'
 
-import { Input, SubmitButton } from '../components/index'
+import { SubmitButton } from '../components/SubmitButton'
+import Input from '../components/Input'
 
-const SignUp: React.FC = () => { //todo - camelCase
+const SignUp: React.FC = () => {
     const { handleSubmit, register, reset } = useForm<NewUser>()
+
+    const [selectedCity, setSelectedCity] = useState('')
     const [userAlert, setUserAlert] = useState<boolean>(false)
+
     const validInputsCountRef = useRef<number>(0)
     const validInputsListRef = useRef<string[]>([])
-    const [selectedCity, setSelectedCity] = useState('')
-    const [streets, setStreets] = useState([])
 
-    const inputFields = [ //todo - move it out, add type
+    const { data: streets = [] } = useStreets(selectedCity);
+
+    const inputFields = [ 
         { inputId: 'fullName', label: 'שם מלא', inputType: 'text', register },
         { inputId: 'id', label: 'ת.ז', inputType: 'number', register },
         { inputId: 'birthDate', label: 'תאריך לידה', inputType: 'date', register },
@@ -28,18 +33,7 @@ const SignUp: React.FC = () => { //todo - camelCase
         { inputId: 'agreeTerms', label: 'אני מסכים לתנאי השירות', inputType: 'checkbox', register },
     ]
 
-    useEffect(() => {
-        async function fetchAndSetStreets() {
-            const fetchedStreets = await fetchStreets(selectedCity)
-            setStreets(fetchedStreets)
-        }
-        if (selectedCity) {
-            fetchAndSetStreets()
-        }
-    }, [selectedCity])
-
-    const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:'] //todo move out
-    //todo ???
+    const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:'] 
     const groupedFields = [inputFields.slice(0, 3), inputFields.slice(3, 5), inputFields.slice(5, 8), inputFields.slice(8)]
 
     const handleCityChange = (city: string) => {
@@ -55,7 +49,6 @@ const SignUp: React.FC = () => { //todo - camelCase
         setUserAlert(false)
         createUser(newUserResult)
         reset()
-        setStreets([])
     }
 
     function countValidInputs(inputId: string) {
@@ -99,7 +92,9 @@ const SignUp: React.FC = () => { //todo - camelCase
                         ))}
                     </div>
                     <div className='btn-container'>
-                        <SubmitButton className={`submit-btn`} buttonText={'שלח'} />
+                        <SubmitButton
+                            disabled={countValidInputs.length < 9}
+                        />
                         {userAlert && <span>יש למלא את כל השדות כדי לבצע הרשמה</span>}
                     </div>
                 </div>

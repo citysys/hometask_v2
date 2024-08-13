@@ -1,11 +1,14 @@
-import { FC } from "react";
+import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import SignUp from "./view/pages/SignUp";
+import SignUp from './view/pages/SignUp';
 
-const App: FC = () => {
-  return (
+const queryClient = new QueryClient();
+
+const App: React.FC = () => (
+  <QueryClientProvider client={queryClient}>
     <SignUp />
-  );
-}
+  </QueryClientProvider>
+);
 
 export default App;
