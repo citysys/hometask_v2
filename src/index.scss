@@ -1,7 +1,7 @@
 // setup
-@import '/src/view/style/setup/variables.scss';
-@import '/src/view/style/setup/base.scss';
+@import '/src/view/styles/variables.scss';
+@import '/src/view/styles/base.scss';
 // cmps
-@import '/src/view/pages/Signup.style.scss';
-@import '/src/view/components/Input/Input.style.scss';
-@import '/src/view/components/SubmitButton/SubmitButton.style.scss';
+@import '/src/view/styles/sign-up-page.scss';
+@import '/src/view/styles/input.scss';
+@import '/src/view/styles/submit-button.scss';
