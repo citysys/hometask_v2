@@ -1,10 +1,10 @@
-import Signup from "./view/pages/Signup";
+import { FC } from "react";
 
-function App() {
+import SignUp from "./view/pages/SignUp";
+
+const App: FC = () => {
   return (
-    <div className="App">
-      <Signup />
-    </div>
+    <SignUp />
   );
 }
 

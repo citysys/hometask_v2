@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Input } from '../components/Input'
-import { SubmitButton } from '../components/SubmitButton'
+
 import { NewUserSchema, NewUser } from '../../model/NewUser.model'
 import { createUser } from '../../controller/entities/user.actions'
 import { fetchStreets } from '../../model/services/api.service'
 
-const Signup: React.FC = () => {
+import { Input, SubmitButton } from '../components/index'
+
+const SignUp: React.FC = () => { //todo - camelCase
     const { handleSubmit, register, reset } = useForm<NewUser>()
     const [userAlert, setUserAlert] = useState<boolean>(false)
     const validInputsCountRef = useRef<number>(0)
@@ -14,7 +15,7 @@ const Signup: React.FC = () => {
     const [selectedCity, setSelectedCity] = useState('')
     const [streets, setStreets] = useState([])
 
-    const inputFields = [
+    const inputFields = [ //todo - move it out, add type
         { inputId: 'fullName', label: 'שם מלא', inputType: 'text', register },
         { inputId: 'id', label: 'ת.ז', inputType: 'number', register },
         { inputId: 'birthDate', label: 'תאריך לידה', inputType: 'date', register },
@@ -37,12 +38,14 @@ const Signup: React.FC = () => {
         }
     }, [selectedCity])
 
-    const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:']
+    const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:'] //todo move out
+    //todo ???
     const groupedFields = [inputFields.slice(0, 3), inputFields.slice(3, 5), inputFields.slice(5, 8), inputFields.slice(8)]
 
     const handleCityChange = (city: string) => {
         setSelectedCity(city)
     }
+
     const formSubmitHandler: SubmitHandler<NewUser> = async (data: NewUser) => {
         if (validInputsCountRef.current <= 8) {
             setUserAlert(true)
@@ -105,4 +108,4 @@ const Signup: React.FC = () => {
     )
 }
 
-export default Signup
+export default SignUp
