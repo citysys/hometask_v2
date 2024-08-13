@@ -7,22 +7,14 @@ import { Form } from '../../components/Form';
 
 const Signup: React.FC = () => {
     const [userAlert, setUserAlert] = useState<boolean>(false);
-    const validInputsCountRef = useRef<number>(0);
-    const validInputsListRef = useRef<string[]>([]);
-
     const formSubmitHandler: SubmitHandler<NewUser> = async (data: NewUser) => {
-        if (validInputsCountRef.current < inputFieldsArray.length - 2) {
-            setUserAlert(true);
-            return;
-        }
         try {
-
             const newUserResult = await NewUserSchema.parseAsync(data);
             createUser(newUserResult);
             setUserAlert(false);
-            validInputsCountRef.current = 0;
-            validInputsListRef.current = [];
+
         } catch (error) {
+            setUserAlert(true);
             console.error('Form validation failed:', error);
         }
     };
@@ -31,11 +23,11 @@ const Signup: React.FC = () => {
         <main className='main-container'>
             <Form<NewUser>
                 localStorageKey='signupForm'
-                inputGroupArray={inputFieldsArray as InputField<NewUser>[]} // Ensure correct type
+                inputGroupArray={inputFieldsArray as InputField<NewUser>[]} 
                 submitFormHandler={formSubmitHandler}
                 title="הרשמה"
                 userAlert={userAlert}
-                schema={NewUserSchema} // Pass the Zod schema here
+                schema={NewUserSchema}
             />
         </main>
     );

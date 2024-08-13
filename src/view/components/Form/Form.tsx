@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitButton } from '../SubmitButton';
 import { Input } from '../Input';
 import { GroupTitle } from '../GroupTitle';
+import { NewUserSchema } from '../../../model/NewUser.model';
 import { HeaderForm } from '../HeaderForm';
-import { z } from 'zod';
 
 interface FormProps<T extends FieldValues> {
     inputGroupArray: {
@@ -34,12 +35,14 @@ const Form = <T extends FieldValues>({
     schema,
 }: FormProps<T>) => {
     const { handleSubmit, register, watch, formState: { errors } } = useForm<T>({
-        resolver: zodResolver(schema), defaultValues: JSON.parse(localStorage.getItem(localStorageKey) || "{}")
+        resolver: zodResolver(schema),
+        mode: 'onChange',
+        defaultValues: JSON.parse(localStorage.getItem(localStorageKey) || "{}")
     });
 
 
     const formValues = watch();
-    console.log({ formValues })
+
     useEffect(() => {
         localStorage.setItem(localStorageKey, JSON.stringify(formValues));
     }, [formValues]);
@@ -71,7 +74,7 @@ const Form = <T extends FieldValues>({
                     ))}
                 </div>
                 <div className='btn-container'>
-                    <SubmitButton className='submit-btn' buttonText='שלח' />
+                    <SubmitButton disabled={Object.keys(errors).length > 0 || Object.values(formValues).join() == ""} className='submit-btn' buttonText='שלח' />
                     {userAlert && <span>יש למלא את כל השדות כדי לבצע הרשמה</span>}
                 </div>
             </div>

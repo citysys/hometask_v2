@@ -1,13 +1,12 @@
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
-import { NewUser } from "../../../model";
 
 export interface SelectProps {
-    inputId: string; 
+    inputId: string;
     options: string[];
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     placeholder?: string;
-    register?: UseFormRegister<any>;
+    register: UseFormRegister<any>;
     required?: boolean;
     dependency?: {
         label: string;
@@ -26,10 +25,10 @@ const Select: React.FC<SelectProps> = ({
 }) => {
     return (
         <select
-            id={inputId as string} // Type assertion to ensure compatibility
+            id={inputId as string}
             required={required}
-            {...(register ? register(inputId) : {})}
-            onChange={onChange} 
+            {...register(inputId)}
+            onBlur={onChange}
         >
             {!dependency?.condition && <option value="">{placeholder}</option>}
             {dependency?.condition && <option value="">{dependency.label}</option>}
