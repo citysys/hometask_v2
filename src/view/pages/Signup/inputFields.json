@@ -1,0 +1,86 @@
+[
+    {
+        "groupTitle": "פרטים אישיים",
+        "type": "input",
+        "groupInputs": [
+            {
+                "inputId": "fullName",
+                "label": "שם מלא",
+                "inputType": "text",
+                "required": true
+            },
+            {
+                "inputId": "id",
+                "label": "ת.ז",
+                "inputType": "number",
+                "required": true
+            },
+            {
+                "inputId": "birthDate",
+                "label": "תאריך לידה",
+                "inputType": "date",
+                "required": true
+            }
+        ]
+    },
+    {
+        "groupTitle": "פרטי התקשרות",
+        "type": "input",
+        "groupInputs": [
+            {
+                "inputId": "phoneNumber",
+                "label": "נייד",
+                "inputType": "number",
+                "required": true
+            },
+            {
+                "inputId": "email",
+                "label": "מייל",
+                "inputType": "email",
+                "required": true
+            }
+        ]
+    },
+    {
+        "groupTitle": "כתובת",
+        "type": "input",
+        "groupInputs": [
+            {
+                "inputId": "city",
+                "label": "עיר",
+                "inputType": "select",
+                "required": true
+            },
+            {
+                "inputId": "street",
+                "label": "רחוב",
+                "inputType": "select",
+                "required": true
+            },
+            {
+                "inputId": "houseNumber",
+                "label": "מספר בית",
+                "inputType": "number",
+                "required": true
+            }
+        ]
+    },
+    {
+        "groupTitle": "",
+        "type": "checkbox",
+        "groupInputs": [
+            {
+                "inputId": "agreeEmail",
+                "label": "אני מסכים לקבל דיוור במייל ובמסרון",
+                "inputType": "checkbox",
+                "required": false
+            },
+            {
+                "inputId": "agreeTerms",
+                "label": "אני מסכים לתנאי השירות",
+                "inputType": "checkbox",
+                "required": true
+            }
+        ]
+    }
+]

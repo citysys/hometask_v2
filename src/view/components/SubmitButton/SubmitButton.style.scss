@@ -10,7 +10,10 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: $submit-btn-blue;
 }
-
+.submit-btn:disabled{
+  opacity: .7;
+  cursor: not-allowed;
+}
 @media(max-width: 425px) {
     .submit-btn {
       width: 40vw;

@@ -1,10 +1,17 @@
-import Signup from "./view/pages/Signup";
+import Signup from "./view/pages/Signup/Signup";
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
+
+
 
 function App() {
   return (
-    <div className="App">
-      <Signup />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <Signup />
+      </div>
+    </QueryClientProvider>
   );
 }
 
