@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 interface iRecord {
     rank: number
     סמל_ישוב: string
@@ -25,8 +26,8 @@ export async function fetchCities(selectedCity: string) {
     }
 }
 
-export async function fetchStreets(selectedCity: string) {
-    let newStreets: any = []
+export async function fetchStreets(selectedCity: string): Promise<string[] | null> {
+    let newStreets: string[] = []
     const data = {
         resource_id: '9ad3862c-8391-4b2f-84a4-2d4c68625f4b',
         limit: 100000,
@@ -35,9 +36,11 @@ export async function fetchStreets(selectedCity: string) {
     try {
         const response = await axios.get('https://data.gov.il/api/3/action/datastore_search', { params: data })
         const records: [] = response.data.result.records
-        if (!records) return false
-        newStreets = records.map((record: iRecord) => record.שם_רחוב)
-        return newStreets
+        if (records.length > 0) {
+            newStreets = records.map((record: iRecord) => record.שם_רחוב)
+            return newStreets
+        }
+        return null
     } catch (error) {
         throw new Error('Failed to fetch streets')
     }
