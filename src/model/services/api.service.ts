@@ -7,18 +7,18 @@ interface iRecord {
     שם_ישוב: string
     שם_רחוב: string
 }
-export async function fetchCities(selectedCity: string) {
+
+export async function fetchCities() {
     let newCities: any = []
     const data = {
         resource_id: '5c78e9fa-c2e2-4771-93ff-7f400a12f7ba',
         limit: 100000,
-        q: selectedCity,
     }
     try {
         const response = await axios.get('https://data.gov.il/api/3/action/datastore_search', { params: data })
         const cities: [] = response.data.result.records
-        newCities = cities.map((c: any) => {
-            return c.שם_ישוב
+        newCities = cities.map((city: iRecord) => {
+            return city.שם_ישוב
         })
         return newCities
     } catch {

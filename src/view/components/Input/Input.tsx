@@ -2,12 +2,13 @@ import React, { useState, forwardRef, ForwardedRef, useEffect } from 'react'
 import { NewUser, NewUserSchema } from '../../../model'
 import { UseFormRegister } from 'react-hook-form'
 import { fetchCities } from '../../../model/services/api.service'
+import { useQuery } from '@tanstack/react-query'
 
 interface iInputProps {
     inputId: string
     label: string
     inputType: string
-    streets: string[] 
+    streets: string[]
     register: UseFormRegister<NewUser>
     countValidInputs: (inputId: string) => void
     onCityChange?: ((city: string) => void) | null
@@ -16,18 +17,24 @@ interface iInputProps {
 const Input = forwardRef(
     ({ streets, onCityChange, inputId, label, inputType, register, countValidInputs }: iInputProps, ref: ForwardedRef<HTMLInputElement>) => {
         const [errorMsg, setErrorMsg] = useState<boolean>(false)
-        const [cities, setCities] = useState<[]>([])
+        // const [cities, setCities] = useState<[]>([])
 
-        useEffect(() => {
-            loadCities('')
-        }, [])
+        const { data: cities, isLoading } = useQuery({
+            queryFn: (): Promise<string[]> => fetchCities(),
+            queryKey: ['cities'],
+            staleTime: Infinity
+        })
 
-        async function loadCities(selectedCity: string) {
-            if (inputId === 'city') {
-                const citiesFromApi = await fetchCities(selectedCity)
-                setCities(citiesFromApi)
-            }
-        }
+        // useEffect(() => {
+        //     loadCities('')
+        // }, [])
+
+        // async function loadCities(selectedCity: string) {
+        //     if (inputId === 'city') {
+        //         const citiesFromApi = await fetchCities(selectedCity)
+        //         setCities(citiesFromApi)
+        //     }
+        // }
 
         async function onchange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
             const inputValue: string = event.target.value
@@ -68,9 +75,10 @@ const Input = forwardRef(
                     />
                 )}
                 {inputId === 'city' && (
+
                     <select id={inputId} {...register(inputId as keyof NewUser)} onChange={onchange} required>
                         <option>אנא בחר עיר</option>
-                        {cities.map((city, index) => {
+                        {cities?.map((city, index) => {
                             return (
                                 <option key={index} value={city}>
                                     {city}

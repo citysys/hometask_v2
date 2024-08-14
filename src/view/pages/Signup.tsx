@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '../components/Input'
 import { SubmitButton } from '../components/SubmitButton'
@@ -9,7 +9,6 @@ import { fetchStreets } from '../../model/services/api.service'
 import {inputFields} from '../constants/input.const'
 
 const Signup: React.FC = () => {
-
     
     const { handleSubmit, register, reset } = useForm<NewUser>()
     const [userAlert, setUserAlert] = useState<boolean>(false)
@@ -17,26 +16,11 @@ const Signup: React.FC = () => {
     const validInputsListRef = useRef<string[]>([])
     const [selectedCity, setSelectedCity] = useState('')
     
-    const queryClient = useQueryClient()
     const {data: streets, isLoading} = useQuery({
         queryFn: (): Promise<string[]> => fetchStreets(selectedCity),
         queryKey: ['streets', {selectedCity}],
         staleTime: Infinity
     })
-
-
-    // const inputFields = [
-    //     { inputId: 'fullName', label: 'שם מלא', inputType: 'text', register },
-    //     { inputId: 'id', label: 'ת.ז', inputType: 'number', register },
-    //     { inputId: 'birthDate', label: 'תאריך לידה', inputType: 'date', register },
-    //     { inputId: 'phoneNumber', label: 'נייד', inputType: 'number', register },
-    //     { inputId: 'email', label: 'מייל', inputType: 'email', register },
-    //     { inputId: 'city', label: 'עיר', inputType: 'select', register },
-    //     { inputId: 'street', label: 'רחוב', inputType: 'select', register },
-    //     { inputId: 'houseNumber', label: 'מספר בית', inputType: 'number', register },
-    //     { inputId: 'agreeEmail', label: 'אני מסכים לקבל דיוור במייל ובמסרון', inputType: 'checkbox', register },
-    //     { inputId: 'agreeTerms', label: 'אני מסכים לתנאי השירות', inputType: 'checkbox', register },
-    // ]
 
     const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:']
     const groupedFields = [inputFields.slice(0, 3), inputFields.slice(3, 5), inputFields.slice(5, 8), inputFields.slice(8)]
