@@ -6,6 +6,7 @@ import { SubmitButton } from '../components/SubmitButton'
 import { NewUserSchema, NewUser } from '../../model/NewUser.model'
 import { createUser } from '../../controller/entities/user.actions'
 import { fetchStreets } from '../../model/services/api.service'
+import {inputFields} from '../constants/input.const'
 
 const Signup: React.FC = () => {
 
@@ -24,18 +25,18 @@ const Signup: React.FC = () => {
     })
 
 
-    const inputFields = [
-        { inputId: 'fullName', label: 'שם מלא', inputType: 'text', register },
-        { inputId: 'id', label: 'ת.ז', inputType: 'number', register },
-        { inputId: 'birthDate', label: 'תאריך לידה', inputType: 'date', register },
-        { inputId: 'phoneNumber', label: 'נייד', inputType: 'number', register },
-        { inputId: 'email', label: 'מייל', inputType: 'email', register },
-        { inputId: 'city', label: 'עיר', inputType: 'select', register },
-        { inputId: 'street', label: 'רחוב', inputType: 'select', register },
-        { inputId: 'houseNumber', label: 'מספר בית', inputType: 'number', register },
-        { inputId: 'agreeEmail', label: 'אני מסכים לקבל דיוור במייל ובמסרון', inputType: 'checkbox', register },
-        { inputId: 'agreeTerms', label: 'אני מסכים לתנאי השירות', inputType: 'checkbox', register },
-    ]
+    // const inputFields = [
+    //     { inputId: 'fullName', label: 'שם מלא', inputType: 'text', register },
+    //     { inputId: 'id', label: 'ת.ז', inputType: 'number', register },
+    //     { inputId: 'birthDate', label: 'תאריך לידה', inputType: 'date', register },
+    //     { inputId: 'phoneNumber', label: 'נייד', inputType: 'number', register },
+    //     { inputId: 'email', label: 'מייל', inputType: 'email', register },
+    //     { inputId: 'city', label: 'עיר', inputType: 'select', register },
+    //     { inputId: 'street', label: 'רחוב', inputType: 'select', register },
+    //     { inputId: 'houseNumber', label: 'מספר בית', inputType: 'number', register },
+    //     { inputId: 'agreeEmail', label: 'אני מסכים לקבל דיוור במייל ובמסרון', inputType: 'checkbox', register },
+    //     { inputId: 'agreeTerms', label: 'אני מסכים לתנאי השירות', inputType: 'checkbox', register },
+    // ]
 
     const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:']
     const groupedFields = [inputFields.slice(0, 3), inputFields.slice(3, 5), inputFields.slice(5, 8), inputFields.slice(8)]
@@ -87,6 +88,7 @@ const Signup: React.FC = () => {
                                                 streets={streets as string[]}
                                                 countValidInputs={countValidInputs}
                                                 {...register(field.inputId as keyof NewUser)}
+                                                register={register}
                                             />
                                         </React.Fragment>
                                     ))}
