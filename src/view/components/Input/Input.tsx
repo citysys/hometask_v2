@@ -7,7 +7,7 @@ interface iInputProps {
     inputId: string
     label: string
     inputType: string
-    streets: string[] | null
+    streets: string[] 
     register: UseFormRegister<NewUser>
     countValidInputs: (inputId: string) => void
     onCityChange?: ((city: string) => void) | null
@@ -32,7 +32,7 @@ const Input = forwardRef(
         async function onchange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
             const inputValue: string = event.target.value
             const inputId: string = event.target.id
-            const fieldValidator = NewUserSchema.pick({ [inputId]: true })
+            const fieldValidator = NewUserSchema.pick({ [inputId]: true } as any)
             const fieldValidationResult = await fieldValidator.safeParseAsync({ [inputId]: inputValue })
 
             if (inputId === 'city' && onCityChange) {

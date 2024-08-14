@@ -26,7 +26,7 @@ export async function fetchCities(selectedCity: string) {
     }
 }
 
-export async function fetchStreets(selectedCity: string): Promise<string[] | null> {
+export async function fetchStreets(selectedCity: string): Promise<string[]> {
     let newStreets: string[] = []
     const data = {
         resource_id: '9ad3862c-8391-4b2f-84a4-2d4c68625f4b',
@@ -40,7 +40,7 @@ export async function fetchStreets(selectedCity: string): Promise<string[] | nul
             newStreets = records.map((record: iRecord) => record.שם_רחוב)
             return newStreets
         }
-        return null
+        return []
     } catch (error) {
         throw new Error('Failed to fetch streets')
     }

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input } from '../components/Input'
 import { SubmitButton } from '../components/SubmitButton'
@@ -7,12 +8,21 @@ import { createUser } from '../../controller/entities/user.actions'
 import { fetchStreets } from '../../model/services/api.service'
 
 const Signup: React.FC = () => {
+
+    
     const { handleSubmit, register, reset } = useForm<NewUser>()
     const [userAlert, setUserAlert] = useState<boolean>(false)
     const validInputsCountRef = useRef<number>(0)
     const validInputsListRef = useRef<string[]>([])
     const [selectedCity, setSelectedCity] = useState('')
-    const [streets, setStreets] = useState([])
+    
+    const queryClient = useQueryClient()
+    const {data: streets, isLoading} = useQuery({
+        queryFn: (): Promise<string[]> => fetchStreets(selectedCity),
+        queryKey: ['streets', {selectedCity}],
+        staleTime: Infinity
+    })
+
 
     const inputFields = [
         { inputId: 'fullName', label: 'שם מלא', inputType: 'text', register },
@@ -26,16 +36,6 @@ const Signup: React.FC = () => {
         { inputId: 'agreeEmail', label: 'אני מסכים לקבל דיוור במייל ובמסרון', inputType: 'checkbox', register },
         { inputId: 'agreeTerms', label: 'אני מסכים לתנאי השירות', inputType: 'checkbox', register },
     ]
-
-    useEffect(() => {
-        async function fetchAndSetStreets() {
-            const fetchedStreets = await fetchStreets(selectedCity)
-            setStreets(fetchedStreets)
-        }
-        if (selectedCity) {
-            fetchAndSetStreets()
-        }
-    }, [selectedCity])
 
     const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:']
     const groupedFields = [inputFields.slice(0, 3), inputFields.slice(3, 5), inputFields.slice(5, 8), inputFields.slice(8)]
@@ -52,7 +52,6 @@ const Signup: React.FC = () => {
         setUserAlert(false)
         createUser(newUserResult)
         reset()
-        setStreets([])
     }
 
     function countValidInputs(inputId: string) {
@@ -85,7 +84,7 @@ const Signup: React.FC = () => {
                                                 {...field}
                                                 key={field.inputId}
                                                 onCityChange={field.inputId === 'city' ? handleCityChange : null}
-                                                streets={field.inputId === 'city' ? null : streets}
+                                                streets={streets as string[]}
                                                 countValidInputs={countValidInputs}
                                                 {...register(field.inputId as keyof NewUser)}
                                             />
