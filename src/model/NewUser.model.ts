@@ -3,7 +3,8 @@ import * as yup from 'yup'
 import { inputFields } from '../view/constants/input.const'
 import { isValidId } from './services/validation.service'
 
-interface FormValues extends yup.InferType<typeof NewUserSchema> {
+export interface FormValues extends yup.InferType<typeof NewUserSchema> {
+    [key: string]: any;
     fullName: string
     id: string
     birthDate: Date
@@ -15,6 +16,7 @@ interface FormValues extends yup.InferType<typeof NewUserSchema> {
     agreeEmail: boolean
     agreeTerms: boolean
 }
+
 
 export const NewUserSchema = yup.object({
     fullName: yup.string().defined('נא להזין שם מלא').matches(/^[א-ת\s]+$/, 'שם לא תקין'),
