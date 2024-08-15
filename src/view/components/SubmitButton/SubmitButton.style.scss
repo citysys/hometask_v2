@@ -9,6 +9,10 @@
     font-weight: 500;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: $submit-btn-blue;
+
+    &:disabled {
+      background-color: gray;
+    }
 }
 
 @media(max-width: 425px) {

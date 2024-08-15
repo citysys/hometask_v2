@@ -74,12 +74,14 @@
         .inputs-row {
             display: flex;
             gap: 40px;
+        }
+    }
 
-            &.check-boxes-row {
-                gap: 5px;
-                display: flex;
-                flex-direction: column;
-            }
+    :last-child {
+        .inputs-row {
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
         }
     }
 }
