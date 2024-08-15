@@ -9,16 +9,15 @@ interface iRecord {
 }
 
 let cityForStreetValidation = ''
-export function isValidId(id: string): boolean {
-    const paddedId = id.length < 9 ? ('00000000' + id).slice(-9) : id
-    return (
-        Array.from(paddedId, Number).reduce((counter, digit, i) => {
+
+export const isValidId = (value: string): boolean => {
+    const id = value.toString()
+    const isValid = Array.from(id, Number)
+        .reduce((counter, digit, i) => {
             const step = digit * ((i % 2) + 1)
             return counter + (step > 9 ? step - 9 : step)
-        }) %
-            10 ===
-        0
-    )
+        }, 0) % 10 === 0
+    return isValid
 }
 
 export async function isValidCity(city: string): Promise<boolean> {

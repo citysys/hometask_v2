@@ -1,93 +1,82 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import React from 'react'
+import * as yup from 'yup'
+import { Formik, Form, FormikHelpers, ErrorMessage } from 'formik'
+import { inputFields, sectionTitles } from '../constants/input.const'
 import { Input } from '../components/Input'
-import { SubmitButton } from '../components/SubmitButton'
-import { NewUserSchema, NewUser } from '../../model/NewUser.model'
-import { createUser } from '../../controller/entities/user.actions'
-import { fetchStreets } from '../../model/services/api.service'
-import {inputFields} from '../constants/input.const'
 
-const Signup: React.FC = () => {
-    
-    const { handleSubmit, register, reset } = useForm<NewUser>()
-    const [userAlert, setUserAlert] = useState<boolean>(false)
-    const validInputsCountRef = useRef<number>(0)
-    const validInputsListRef = useRef<string[]>([])
-    const [selectedCity, setSelectedCity] = useState('')
-    
-    const {data: streets, isLoading} = useQuery({
-        queryFn: (): Promise<string[]> => fetchStreets(selectedCity),
-        queryKey: ['streets', {selectedCity}],
-        staleTime: Infinity
-    })
+export const Signup: React.FC = () => {
 
-    const sectionTitles: string[] = ['פרטים אישיים:', 'פרטי התקשרות:', 'כתובת:']
     const groupedFields = [inputFields.slice(0, 3), inputFields.slice(3, 5), inputFields.slice(5, 8), inputFields.slice(8)]
 
-    const handleCityChange = (city: string) => {
-        setSelectedCity(city)
-    }
-    const formSubmitHandler: SubmitHandler<NewUser> = async (data: NewUser) => {
-        if (validInputsCountRef.current <= 8) {
-            setUserAlert(true)
-            return
-        }
-        const newUserResult = await NewUserSchema.parseAsync(data)
-        setUserAlert(false)
-        createUser(newUserResult)
-        reset()
+    const YupUserSchema = yup.object({
+        fullName: yup.string().defined()
+    })
+
+    const onSubmit = () => {
+        console.log('submitting')
     }
 
-    function countValidInputs(inputId: string) {
-        if (validInputsListRef.current.includes(inputId)) return
-        validInputsListRef.current.push(inputId)
-        validInputsCountRef.current++
-    }
+    const initialValues = inputFields.reduce((acc, field) => {
+        acc[field.inputId] = field.initialValue
+        return acc
+    }, {} as Record<string, string | boolean>)
 
     return (
-        <main className='main-container'>
-            <form onSubmit={handleSubmit(formSubmitHandler)} className='signup-form'>
-                <div className='form-container'>
-                    <header className='form-header'>
-                        <span className='header-title'>הרשמה :</span>
-                        <span className='header-explanation'>*שדות המסומנים בכוכבית הם שדות חובה</span>
-                    </header>
-                    <div className='inputs-container'>
-                        {groupedFields.map((fields, index) => (
-                            <div className='inputs-section' key={index}>
-                                {index < 3 && (
-                                    <h2 className={'section-title'}>
-                                        {sectionTitles[index]}
-                                        {<span className='section-seperator'></span>}
-                                    </h2>
-                                )}
-                                <div className={`inputs-row  ${index === 3 ? 'check-boxes-row' : ''}`}>
-                                    {fields.map((field) => (
-                                        <React.Fragment key={field.inputId}>
-                                            <Input
-                                                {...field}
-                                                key={field.inputId}
-                                                onCityChange={field.inputId === 'city' ? handleCityChange : null}
-                                                streets={streets as string[]}
-                                                countValidInputs={countValidInputs}
-                                                {...register(field.inputId as keyof NewUser)}
-                                                register={register}
-                                            />
-                                        </React.Fragment>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className='btn-container'>
-                        <SubmitButton className={`submit-btn`} buttonText={'שלח'} />
-                        {userAlert && <span>יש למלא את כל השדות כדי לבצע הרשמה</span>}
-                    </div>
-                </div>
-            </form>
-        </main>
-    )
-}
+        <>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={onSubmit}
+                validationSchema={YupUserSchema}
+                enableReinitialize={true}
 
-export default Signup
+            >
+                {({ errors, touched, dirty, setFieldValue }) => (
+
+                    <Form className='signup-form'>
+                        <div className="form-container">
+                            <header className='form-header'>
+                                <span className='header-title'>הרשמה :</span>
+                                <span className='header-explanation'>*שדות המסומנים בכוכבית הם שדות חובה</span>
+                            </header>
+
+                            <div className="inputs-container">
+                                {groupedFields.map((fields, index) => (
+                                    <div className="inputs-section" key={index}>
+                                        {sectionTitles[index] && (
+                                            <h2 className={'section-title'}>
+                                                {sectionTitles[index]}
+                                                {<span className='section-seperator'></span>}
+                                            </h2>
+                                        )}
+
+                                        <div className={`inputs-row`}>
+                                            {fields.map(({ inputId, label, isRequired, inputType }) => (
+                                                <React.Fragment key={inputId}>
+                                                    <Input
+                                                        inputId={inputId}
+                                                        label={label}
+                                                        isRequired={isRequired}
+                                                        inputType={inputType}
+                                                    />
+
+                                                    <ErrorMessage name={inputId} component="div" className="error" />
+                                                </React.Fragment>
+
+                                            ))}
+                                        </div>
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+                        </div>
+
+                    </Form>
+                )}
+
+            </Formik>
+        </>
+    )
+
+}
